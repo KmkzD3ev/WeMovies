@@ -1,94 +1,77 @@
-# WeMovies – Desafio Mobile Nativo
+Avaliação
 
-Este projeto é parte do desafio de desenvolvimento mobile nativo para a vaga de desenvolvedor pleno.
+Pontos avaliados:
 
----
+Criação do novo projeto
 
-## Sobre o App
+Visão sistêmica
 
-O WeMovies é um e-commerce mobile simplificado que consome uma API externa para exibir uma lista de filmes. Permite adicionar ao carrinho, visualizar subtotal, remover produtos e finalizar a compra com um fluxo completo.
+Desafio de Estruturação de Projeto Apps Nativo (Android ou iOS)
 
----
+O desafio consiste na criação de um aplicativo mobile de e-commerce simplificado do zero, onde o candidato terá que criar um fluxo com três módulos/telas.
 
-## Funcionalidades Implementadas
 
-- Splash + Load State com feedback visual
-- Home com consumo de API (Retrofit) e exibição de filmes (RecyclerView)
-- Carrinho com:
-  - Itens adicionados e atualizados dinamicamente
-  - Somatório do valor total
-  - Empty state com redirecionamento
-  - Scroll total com header, lista e footer bem integrados
-- Finalização de compra com tela de sucesso
-- Empty State na Home, caso a API retorne vazia
 
----
+São elas:
 
-## Arquitetura
 
-O app segue o padrão MVVM, utilizando:
 
-- ViewModel com LiveData para gerenciamento de estado
-- Separação clara entre camadas (ui, network, models, viewmodels)
-- Componentização de itens visuais via RecyclerView com múltiplos tipos de item (Header, Produto, Footer)
-- Glide para carregamento eficiente de imagens
-- Retrofit para requisições HTTP
-- WindowInsetsCompat para ajuste inteligente da interface em dispositivos com gestos ou barra de navegação
+Home: Onde terá que fazer uma requisição na API, trazendo assim, a lista de filmes quem podem ser adicionados ao carrinho.
 
----
+Carrinho: Onde poderá ver os itens que foram adicionados, somando o valor total com base em cada item adicionado, podendo remover um item do carrinho. Por padrão, se o carrinho tiver nenhum item adicionado, deverá aparecer a tela de empty state com a opção de voltar para tela inicial.
 
-## Decisão Técnica
+Compra realizada: Após confirmar o pedido na tela anterior, o usuário deverá ser encaminhado para a tela de pedido confirmado. Aqui o usuário também terá a opção de voltar para tela inicial.
 
-Apesar do tempo reduzido, optei por construir a base do projeto com uma arquitetura sólida que permita escalar com segurança em ambiente de produção. Isso inclui:
+Protótipo do Figma
 
-- Desacoplamento da UI e lógica de dados
-- Componentes reutilizáveis
-- Estrutura organizada por feature (ex: ui.home, ui.carrinho)
-- Base pronta para integração com Hilt ou Koin, se necessário
 
-Em contextos reais, injeção de dependência como Hilt seria aplicada. Neste desafio, optei por manter a injeção manual para priorizar entrega funcional e código limpo no prazo estabelecido.
 
----
+*Obs: os assets podem ser exportados do próprio Figma.
 
-## Testes Manuais Realizados
 
-- Adicionar e remover itens do carrinho
-- Teste de scroll e visibilidade do botão de finalizar
-- Simulação de API vazia (empty state)
-- Navegação completa entre telas
-- Responsividade visual (insets, diferentes resoluções)
 
----
+Sobre a aplicação
 
-## Observações
 
-- Projeto entregue em 48 horas
-- Codigo prontamente escalavel
-- Código modular, legível e de fácil manutenção
 
----
+Para o desafio, inicialize e estruture a aplicação.
 
-## Estrutura de pastas
 
-wemovie-ecommerce/
-├── ui/
-│   ├── home/
-│   ├── carrinho/
-│   ├── finalizar/
-│   ├── perfil/
-│   └── LoadState/
-├── ViewModels/
-├── Models/
-├── NetWork/
-├── utils/
-├── Error/
-├── yaml/
-├── MainActivity.kt
-└── README.md
 
----
+Sobre a API
 
-## API
 
-https://wefit-movies.vercel.app/api/movies
-"""
+
+Para o desafio, simularemos uma API, onde o candidato terá que realizar um GET para https://wefit-movies.vercel.app/api/movies onde terá a lista de filmes.
+
+
+
+Avaliação
+
+Pontos avaliados:
+
+Fidelidade do layout do Figma;
+
+Funcionamento da aplicação (ausência de bugs);
+
+Qualidade do código:
+
+Utilização das estruturas voltada para aplicativos mobile;
+
+Organização das pastas;
+
+Bom nível de Componentização;
+
+Aplicação de tecnologias;
+
+Ex: aplicar uma biblioteca específica que acelere o desenvolvimento.
+
+Aplicação das melhores práticas para isolar comportamento de UI da lógica de Integração;
+
+Código legível e de fácil manutenção;
+
+Ex: variáveis com nomes claros.
+
+Código limpo
+
+Solicito a gentileza, exclusivamente para o teste, deixe o seu código na pasta wemovie-ecommerce. Você terá 48 horas a contar da solicitação deste teste. Caso você precise de mais tempo, por favor, nos informe. Nesse momento é muito importante para nós que você consiga entregar o desafio completo :)
