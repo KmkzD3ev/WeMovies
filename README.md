@@ -22,7 +22,8 @@ Carrinho: Onde poderá ver os itens que foram adicionados, somando o valor total
 
 Compra realizada: Após confirmar o pedido na tela anterior, o usuário deverá ser encaminhado para a tela de pedido confirmado. Aqui o usuário também terá a opção de voltar para tela inicial.
 
-Protótipo do Figma
+[Protótipo do Figma](https://www.figma.com/design/JO1VjFm5bqboChB2zf9maL/Teste-Front---Nativo-Android-iOS---WeFit-2024?t=0I1gBmUBzgdYeRpw-0)
+
 
 
 
