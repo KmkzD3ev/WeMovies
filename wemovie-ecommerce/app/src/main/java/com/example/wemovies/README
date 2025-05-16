@@ -58,6 +58,17 @@ Em contextos reais, injeção de dependência como Hilt seria aplicada. Neste de
 - Navegação completa entre telas
 - Responsividade visual (insets, diferentes resoluções)
 
+
+Testes Automatizados Implementados
+Para garantir a confiabilidade e escalabilidade do projeto, foram implementados testes unitários para a camada de ViewModel, cobrindo cenários críticos de consumo de API e tratamento de conectividade.
+
+Tecnologias: JUnit 4, Mockito, AndroidX Test (InstantTaskExecutorRule, LiveDataTesting, Coroutines Test).
+Cobertura:
+Teste de sucesso na busca de filmes via API.
+Simulação de cenário sem conexão com a internet.
+Tratamento de erros na camada de repositório.
+Benefícios: Assegura a integridade da lógica de negócios, facilita a manutenção e permite refatorações seguras.
+
 ---
 
 ## Observações

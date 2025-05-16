@@ -20,6 +20,9 @@ import javax.inject.Inject
  *
  * Utiliza LiveData para expor os dados e controlar estados de carregamento
  * e erro. Compatível com testes unitários usando Mockito e JUnit.
+ *
+ *
+ * Injeçao de dependecia usando  Hilt (Distribuiçao de dados)
  */
 @HiltViewModel
 class MovieViewModel @Inject constructor(
@@ -48,6 +51,8 @@ class MovieViewModel @Inject constructor(
      * e atualizar os dados das LiveData conforme a resposta.
      *
      * @param context Contexto necessário para verificar conectividade.
+     *
+     *
      */
     fun fetchMovies(context: Context) {
 

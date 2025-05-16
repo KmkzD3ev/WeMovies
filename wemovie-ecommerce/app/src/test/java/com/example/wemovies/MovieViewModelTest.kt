@@ -20,9 +20,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -38,7 +39,6 @@ class MovieViewModelTest {
     @Mock
     private lateinit var repository: MovieRepository
 
-    @Mock
     private lateinit var context: Context
 
     @Mock
@@ -49,33 +49,32 @@ class MovieViewModelTest {
 
     private lateinit var viewModel: MovieViewModel
 
-    // Observers
+    @Mock
     private lateinit var moviesObserver: Observer<List<Movie>>
+
+    @Mock
     private lateinit var hasMoviesObserver: Observer<Boolean>
-    private lateinit var isLoadingObserver: Observer<Boolean>
+
+    @Mock
     private lateinit var navigateToErrorObserver: Observer<Unit>
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
-        // Configurar mocks
+        // Criação do mock de context e retorno do connectivityManager simulado (Testes Unitario)
+        context = mock()
         whenever(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager)
-        whenever(connectivityManager.activeNetwork).thenReturn(null)
+
+        // Mocks da cadeia de chamadas de conectividade
+        whenever(connectivityManager.activeNetwork).thenReturn(mock())
         whenever(connectivityManager.getNetworkCapabilities(any())).thenReturn(networkCapabilities)
+        whenever(networkCapabilities.hasTransport(any())).thenReturn(true)
 
         viewModel = MovieViewModel(repository)
 
-        // Inicializar observers
-        moviesObserver = mock(Observer::class.java) as Observer<List<Movie>>
-        hasMoviesObserver = mock(Observer::class.java) as Observer<Boolean>
-        isLoadingObserver = mock(Observer::class.java) as Observer<Boolean>
-        navigateToErrorObserver = mock(Observer::class.java) as Observer<Unit>
-
-        // Observar LiveData
         viewModel.movies.observeForever(moviesObserver)
         viewModel.hasMovies.observeForever(hasMoviesObserver)
-        viewModel.isLoading.observeForever(isLoadingObserver)
         viewModel.navigateToError.observeForever(navigateToErrorObserver)
     }
 
@@ -84,67 +83,66 @@ class MovieViewModelTest {
         Dispatchers.resetMain()
         viewModel.movies.removeObserver(moviesObserver)
         viewModel.hasMovies.removeObserver(hasMoviesObserver)
-        viewModel.isLoading.removeObserver(isLoadingObserver)
         viewModel.navigateToError.removeObserver(navigateToErrorObserver)
     }
 
     @Test
     fun `fetchMovies should update LiveData when successful`() = runTest {
-        // Arrange
         val mockMovies = listOf(
             Movie(
                 id = 1,
                 title = "Test Movie",
                 image = "image_url",
                 price = 9.99,
-
             )
         )
 
         whenever(repository.getMovies()).thenReturn(mockMovies)
-        whenever(connectivityManager.getNetworkCapabilities(any())).thenReturn(networkCapabilities)
-        whenever(networkCapabilities.hasTransport(any())).thenReturn(true)
 
-        // Act
+        val isLoadingObserver = mock<Observer<Boolean>>()
+        viewModel.isLoading.observeForever(isLoadingObserver)
+
         viewModel.fetchMovies(context)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
         verify(isLoadingObserver).onChanged(true)
         verify(moviesObserver).onChanged(mockMovies)
         verify(hasMoviesObserver).onChanged(true)
         verify(isLoadingObserver).onChanged(false)
         verify(navigateToErrorObserver, never()).onChanged(any())
+
+        viewModel.isLoading.removeObserver(isLoadingObserver)
     }
 
     @Test
     fun `fetchMovies should handle no internet connection`() = runTest {
-        // Arrange
         whenever(connectivityManager.getNetworkCapabilities(any())).thenReturn(null)
 
-        // Act
         viewModel.fetchMovies(context)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
         verify(navigateToErrorObserver).onChanged(any())
-        verify(isLoadingObserver, never()).onChanged(true)
+        verify(mock<Observer<Boolean>>(), never()).onChanged(any())
     }
 
     @Test
     fun `fetchMovies should handle repository error`() = runTest {
-        // Arrange
         whenever(repository.getMovies()).thenThrow(RuntimeException("API Error"))
         whenever(connectivityManager.getNetworkCapabilities(any())).thenReturn(networkCapabilities)
         whenever(networkCapabilities.hasTransport(any())).thenReturn(true)
 
-        // Act
+        val isLoadingObserver = mock<Observer<Boolean>>()
+        viewModel.isLoading.observeForever(isLoadingObserver)
+
         viewModel.fetchMovies(context)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
         verify(isLoadingObserver).onChanged(true)
         verify(navigateToErrorObserver).onChanged(any())
         verify(hasMoviesObserver).onChanged(false)
+        verify(isLoadingObserver).onChanged(false)
+        verify(moviesObserver, never()).onChanged(any())
+
+        viewModel.isLoading.removeObserver(isLoadingObserver)
     }
 }
