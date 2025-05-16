@@ -1,6 +1,5 @@
-package com.example.wemovies.NetWork
+package com.example.wemovies.netWork
 
-import com.example.wemovies.Models.Movie
 import com.example.wemovies.Models.MoviesResponse
 import retrofit2.Response
 import retrofit2.http.GET

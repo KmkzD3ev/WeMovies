@@ -1,4 +1,4 @@
-package com.example.wemovies.NetWork
+package com.example.wemovies.netWork
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

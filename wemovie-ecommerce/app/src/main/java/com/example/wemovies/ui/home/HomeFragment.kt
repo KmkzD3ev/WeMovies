@@ -14,7 +14,9 @@ import com.example.wemovies.Adapters.MovieAdapter
 import com.example.wemovies.ViewModels.CartViewModel
 import com.example.wemovies.ViewModels.MovieViewModel
 import com.example.wemovies.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null

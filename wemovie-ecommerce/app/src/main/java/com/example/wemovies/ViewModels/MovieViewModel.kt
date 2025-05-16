@@ -1,22 +1,31 @@
 package com.example.wemovies.ViewModels
 
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wemovies.Error.ErrorActivity
 import com.example.wemovies.Models.Movie
-import com.example.wemovies.NetWork.RetrofitInstance
+import com.example.wemovies.Repository.MovieRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieViewModel : ViewModel() {
+/**
+ * ViewModel responsável por gerenciar os dados relacionados aos filmes,
+ * obtendo informações a partir do repositório [MovieRepository].
+ *
+ * Utiliza LiveData para expor os dados e controlar estados de carregamento
+ * e erro. Compatível com testes unitários usando Mockito e JUnit.
+ */
+@HiltViewModel
+class MovieViewModel @Inject constructor(
+    private val repository: MovieRepository
+
+) : ViewModel() {
 
     // LiveData com a lista de filmes recebidos da API
     private val _movies = MutableLiveData<List<Movie>>()
@@ -34,45 +43,36 @@ class MovieViewModel : ViewModel() {
     private val _navigateToError = MutableLiveData<Unit>()
     val navigateToError: LiveData<Unit> = _navigateToError
 
-
     /**
      * Função responsável por fazer a chamada para a API
      * e atualizar os dados das LiveData conforme a resposta.
+     *
+     * @param context Contexto necessário para verificar conectividade.
      */
     fun fetchMovies(context: Context) {
 
         if (!isInternetAvailable(context)) {
             Log.e("MovieViewModel", "Sem conexão com a internet.")
             _navigateToError.value = Unit
-
-
             return
         }
         _isLoading.value = true
 
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.getMovies()
-                if (response.isSuccessful && response.body() != null) {
-                    val movieList = response.body()!!.movies
-                    _movies.value = movieList
-                    _hasMovies.value = movieList.isNotEmpty()
-                }
+                val response = repository.getMovies()
+                _movies.value = response
+                _hasMovies.value = response.isNotEmpty()
 
-                else {
-                    _hasMovies.value = false
-                }
             } catch (e: Exception) {
                 _hasMovies.value = false
                 Log.e("MovieViewModel", "Erro ao buscar filmes", e)
                 _navigateToError.value = Unit
-
             } finally {
                 _isLoading.value = false
             }
         }
     }
-
 
     //Monitoramento Rede/Internet
     fun isInternetAvailable(context: Context): Boolean {
@@ -84,10 +84,4 @@ class MovieViewModel : ViewModel() {
                         || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
                         || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
-
-
-
-
-
-
 }

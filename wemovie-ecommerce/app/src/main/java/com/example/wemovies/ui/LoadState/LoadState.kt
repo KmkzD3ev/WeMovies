@@ -13,9 +13,10 @@ import com.example.wemovies.MainActivity
 import com.example.wemovies.R
 import com.example.wemovies.ViewModels.MovieViewModel
 import com.example.wemovies.utils.DialogHelper
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoadState : AppCompatActivity() {
-
     private val viewModel: MovieViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
