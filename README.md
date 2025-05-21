@@ -1,6 +1,6 @@
 # WeMovies – Desafio Mobile Nativo
 
-Este projeto é parte do desafio de desenvolvimento mobile nativo para a vaga de desenvolvedor pleno.
+Este projeto é parte do desafio de desenvolvimento mobile nativo 
 
 ---
 
@@ -39,14 +39,14 @@ O app segue o padrão MVVM, utilizando:
 
 ## Decisão Técnica
 
-Apesar do tempo reduzido, optei por construir a base do projeto com uma arquitetura sólida que permita escalar com segurança em ambiente de produção. Isso inclui:
+Optei por construir a base do projeto com uma arquitetura sólida que permita escalar com segurança em ambiente de produção. Isso inclui:
 
 - Desacoplamento da UI e lógica de dados
 - Componentes reutilizáveis
 - Estrutura organizada por feature (ex: ui.home, ui.carrinho)
 - Base pronta para integração com Hilt ou Koin, se necessário
 
-Em contextos reais, injeção de dependência como Hilt seria aplicada. Neste desafio, optei por manter a injeção manual para priorizar entrega funcional e código limpo no prazo estabelecido.
+
 
 ---
 
