@@ -63,6 +63,9 @@ class MovieViewModelTest {
         Dispatchers.setMain(testDispatcher)
 
         // Criação do mock de context e retorno do connectivityManager simulado (Testes Unitario)
+
+        // Criação do mock de context e retorno do connectivityManager simulado
+
         context = mock()
         whenever(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager)
 

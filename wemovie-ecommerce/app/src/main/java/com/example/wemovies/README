@@ -73,7 +73,6 @@ Benefícios: Assegura a integridade da lógica de negócios, facilita a manuten�
 
 ## Observações
 
-- Projeto entregue em 48 horas
 - Codigo prontamente escalavel
 - Código modular, legível e de fácil manutenção
 
@@ -95,6 +94,7 @@ wemovie-ecommerce/
 ├── Error/
 ├── yaml/
 ├── MainActivity.kt
+├── MovieViewModelTest
 └── README.md
 
 ---
