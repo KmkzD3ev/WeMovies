@@ -7,7 +7,7 @@ Este projeto é parte do desafio de desenvolvimento mobile nativo para a vaga de
 ## Sobre o App
 
 O WeMovies é um e-commerce mobile simplificado que consome uma API externa para exibir uma lista de filmes. Permite adicionar ao carrinho, visualizar subtotal, remover produtos e finalizar a compra com um fluxo completo.
-
+workflows
 ---
 
 ## Funcionalidades Implementadas
