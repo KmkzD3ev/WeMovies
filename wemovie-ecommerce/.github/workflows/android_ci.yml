@@ -95,5 +95,5 @@ jobs:
         with: # Parâmetros para a action 'upload-artifact'.
           name: app-debug.apk # Nome que o artefato terá quando for salvo.
           path: app/build/outputs/apk/debug/app-debug.apk # Caminho para o APK gerado dentro do runner.
-          # Adapte o caminho se seu APK for gerado em outro local.
+          # Nova linha de teste para forçar o push
 
