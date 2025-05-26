@@ -1,9 +1,12 @@
 # .github/workflows/android_ci.yml
 
+
+
 # -----------------------------------------------------------
 # Seção 1: Configurações Gerais do Workflow
 # Esta seção define o nome do workflow e quando ele será acionado.
 # -----------------------------------------------------------
+
 
 # 'name' (Nome do Workflow):
 # Este é o nome amigável que aparecerá na aba 'Actions' do seu repositório GitHub.
