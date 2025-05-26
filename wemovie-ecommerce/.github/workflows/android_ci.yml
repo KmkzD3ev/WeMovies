@@ -4,7 +4,7 @@
 
 # -----------------------------------------------------------
 # Seção 1: Configurações Gerais do Workflow
-# Esta seção define o nome do workflow e quando ele será acionado.
+# Esta seção define o nome do workflow e quando ele será acionado na primeira chamada.
 # -----------------------------------------------------------
 
 
