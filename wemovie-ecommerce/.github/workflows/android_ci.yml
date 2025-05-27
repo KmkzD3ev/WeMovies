@@ -1,99 +1,37 @@
-# .github/workflows/android_ci.yml
-
-
-
-# -----------------------------------------------------------
-# Seção 1: Configurações Gerais do Workflow
-# Esta seção define o nome do workflow e quando ele será acionado na primeira chamada.
-# -----------------------------------------------------------
-
-
-# 'name' (Nome do Workflow):
-# Este é o nome amigável que aparecerá na aba 'Actions' do seu repositório GitHub.
-# É útil para identificar rapidamente o propósito do workflow.
 name: Android CI WeMovies
 
-# 'on' (Eventos de Gatilho):
-# Define quais eventos no repositório GitHub acionarão este workflow.
-# Quando um desses eventos ocorrer, o GitHub Actions iniciará a execução do pipeline.
 on:
-  # 'push': Aciona o workflow sempre que houver um 'git push' para os branches especificados.
   push:
-    branches:
-      - master     # O pipeline será executado quando houver um push para o branch 'main'.
-      - develop  # O pipeline também será executado quando houver um push para o branch 'develop'.
-
-
-  # 'pull_request': Aciona o workflow sempre que um Pull Request (PR) for aberto,
-  # atualizado ou sincronizado para os branches especificados.
-  # Isso é crucial para validar o código antes de ser integrado ao branch principal.
+    branches: [ master, develop ]
   pull_request:
-    branches:
-      - master     # O pipeline será executado para PRs que miram no branch 'main'.
-      - develop  # O pipeline também será executado para PRs que miram no branch 'develop'.
-
-# -----------------------------------------------------------
-# Seção 2: Definição dos Jobs (Tarefas)
-# Um workflow é composto por um ou mais 'jobs'. Cada 'job' executa um conjunto de 'steps'.
-# 'jobs' podem ser executados em paralelo por padrão, a menos que você defina dependências.
-# -----------------------------------------------------------
+    branches: [ master, develop ]
 
 jobs:
-  # 'build_and_test': Este é o nome do nosso único job neste workflow.
-  # Ele será responsável por compilar o app e rodar os testes unitários.
   build_and_test:
-    # 'runs-on': Define o ambiente (runner) onde este job será executado.
-    # 'ubuntu-latest' é uma máquina virtual Linux hospedada pelo GitHub, com diversas ferramentas pré-instaladas.
-    # É o ambiente mais comum e recomendado para builds Android em CI.
     runs-on: ubuntu-latest
 
-    # 'steps': Uma sequência de comandos ou 'actions' (ações reutilizáveis) que este job irá executar.
-    # Os steps são executados em ordem, um após o outro. Se um step falhar, o job inteiro falha.
     steps:
-      # Passo 1: Checkout Repository
-      # 'name': Nome descritivo para o passo, visível nos logs do GitHub Actions.
       - name: Checkout Repository
-        # 'uses': Indica que este passo vai usar uma 'action' pré-definida do GitHub.
-        # 'actions/checkout@v4' é uma action oficial que clona o código do seu repositório
-        # para o ambiente do runner, tornando-o disponível para os próximos passos.
         uses: actions/checkout@v4
 
-      # Passo 2: Set up JDK (Java Development Kit)
-      # Configura o ambiente Java necessário para o Gradle e para compilar seu projeto Android.
       - name: Set up JDK 17
-        uses: actions/setup-java@v4 # Action oficial para configurar o Java.
-        with: # Parâmetros para a action 'setup-java'.
-          java-version: '17' # Define a versão do JDK. A versão 17 é uma LTS e boa para Android moderno.
-          distribution: 'temurin' # Distribuição específica do JDK (Temurin é popular e open-source).
-          cache: 'gradle' # Habilita o cache de dependências do Gradle. Isso acelera builds futuros
-          # pois as dependências não precisam ser baixadas toda vez.
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
 
-      # Passo 3: Grant execute permission for gradlew
-      # 'gradlew' é o script do Gradle Wrapper. Em sistemas Linux (como o 'ubuntu-latest' runner),
-      # ele precisa de permissão de execução para ser rodado.
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew # Comando shell para dar permissão de execução ao 'gradlew'.
+        run: chmod +x gradlew
 
-      # Passo 4: Run Unit Tests
-      # Executa os testes unitários do seu projeto Android.
-      # É crucial para garantir a integridade da lógica de negócios antes de compilar.
       - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest # Comando Gradle para executar testes unitários do módulo 'app' (debug).
+        run: ./gradlew testDebugUnitTest
 
-      # Passo 5: Build Debug APK
-      # Compila o aplicativo Android na versão de debug.
-      # A versão de debug é geralmente mais rápida de construir e não requer chaves de assinatura.
       - name: Build Debug APK
-        run: ./gradlew assembleDebug # Comando Gradle para compilar o APK de debug.
+        run: ./gradlew assembleDebug
 
-      # Passo 6: Upload Debug APK (Opcional, mas útil)
-      # Este passo faz o upload do APK gerado como um "artefato" do workflow.
-      # Artefatos são arquivos gerados durante a execução do workflow que você pode baixar depois
-      # diretamente da interface do GitHub Actions.
       - name: Upload Debug APK
-        uses: actions/upload-artifact@v4 # Action oficial para fazer upload de artefatos.
-        with: # Parâmetros para a action 'upload-artifact'.
-          name: app-debug.apk # Nome que o artefato terá quando for salvo.
-          path: app/build/outputs/apk/debug/app-debug.apk # Caminho para o APK gerado dentro do runner.
-          # Nova linha de teste para forçar o push
-
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
